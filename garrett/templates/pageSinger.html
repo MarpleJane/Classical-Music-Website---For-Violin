@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Classical Music Website</title>
+    <style>
+        #myCarousel{
+          margin: 50px 0 0 0;
+        }
+    </style>
+
+  <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+  
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                  <button class="navbar-toggle" data-toggle="collapse" data-target="#responsive-bar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                    <a href="{% url 'garrett:pageSinger' %}" class="navbar-brand">Hello, {{ user }}</a>
+                </div>
+                <div class="collapse navbar-collapse" id="responsive-bar">
+                  <ul class="nav navbar-nav">
+                    <li class="active"><a href="">Player</a></li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Choice <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'garrett:pageSinger' %}">Player</a></li>
+                        <li><a href="{% url 'garrett:allSong' %}">Song</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="{% url 'garrett:index' %}">log out</a></li>
+                  </ul>
+                  <form method="post" action="" class="navbar-form navbar-right">
+                    <div class="form-group">
+                      {% csrf_token %}
+                      {{ search }}
+                      <!-- <input type="text" class="form-control" name="search" value=''> -->
+                    </div>
+                    <button type="submit" class="btn btn-default">search</button>
+                  </form>
+                </div>
+            </div>
+    </nav>
+
+    <div id="myCarousel" class="carousel slide">
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active" align="center" style="background:#0d100d">
+          <img src="{% static 'img/david4.jpg' %}" alt="">
+        </div>
+        <div class="item" align="center" style="background:#a8a5a4">
+          <img src="{% static 'img/celine2.jpg' %}" alt="">
+        </div>
+        <div class="item" align="center" style="background:#000000">
+          <img src="{% static 'img/itzhak2.jpg' %}" alt="">
+        </div>
+      </div>
+      <a href="#myCarousel" data-slide="prev" class="carousel-control left">&lsaquo;</a>
+      <a href="#myCarousel"  data-slide="next" class="carousel-control right">&rsaquo;</a>
+    </div>
+
+    <div class="container" style="margin:100px">
+      <div class="row">
+        {% for singer in singers %}
+        <div class="col-xs-3 col-xs-offset-1">
+          <img src={{ singer.picture.url }} alt="" class="img-circle" data-toggle="modal" data-target="#{{ singer.singerID }}">
+        </div>
+        {% endfor %}
+      </div>
+      <br>
+
+      <div class="row">
+        {% for singer in singers %}
+        <div class="col-xs-3 col-xs-offset-1">
+          <div class="container">
+            <h4>
+              <a style="color:#000;" href="{% url 'garrett:singerSong' singer.singerID %}">{{ singer.name }}</a>
+            </h4>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+
+   
+
+      {% for singer in singers %}
+      <div class="modal fade" id="{{ singer.singerID }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">{{ singer.name }}</h4>
+            </div>
+            <div class="modal-body">
+              <table>
+                <tr>
+                  <td width="50%">
+                    <img src="{{ singer.picture.url }}" alt="">
+                  </td>
+                  <td padding="100px">
+                    <h4><strong>&nbsp;&nbsp;Author:</strong><small><b>{{ singer.name }}</b></small></h4>
+                    <h4><strong>&nbsp;&nbsp;Nation:</strong><small><b>{{ singer.nation }}</b></small></h4>
+                    <h4><strong>&nbsp;&nbsp;Birth:</strong><small><b>{{ singer.birth }}</b></small></h4>
+                </tr>
+              </table>
+              <br>
+              <blockquote><p>{{ singer.intro }}</p></blockquote>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+
+
+    <!-- <img src="1.jpg" width="170" height="128" onMouseOut="this.src='1.jpg';" onMouseOver="this.src='2.jpg';"> -->
+    <script src="{% static 'bootstrap/dist/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+    <script type="text/javascript">
+    $(function(){
+      $('#myCarousel').carousel({
+        interval:4000
+      })
+    })
+
+      $(function(){
+        {% for singer in singers %}
+      $("#{{ singer.singerID }}").modal({
+        show:false
+      });
+        {% endfor %}
+    })
+      </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Classical Music</title>
+
+    <style>
+
+        /*body{
+            background: -webkit-linear-gradient(left, #555 0%, #333 100%);
+            background: -o-linear-gradient(left, #555 0%, #333 100%);
+            background: linear-gradient(to right, #555 0%, #333 100%);
+          }*/
+
+        body{
+            margin-top:50px;
+            background-position: 0% -25%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-image: url("{% static 'img/5.jpg' %}");
+        }
+
+        .form-signin{
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+        .div-signin{
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+            background-color: #fff;
+            background-color: rgba(0,0,0,0.1);
+        }
+        input{
+            margin-bottom: 3px;
+        }
+
+  </style>
+
+    <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+   
+  </head>
+
+  
+
+    <body data-spy="scroll" data-target=".navbar" data-offset="320">
+        
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" data-toggle="collapse" data-target="#myScroll">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="{% url 'garrett:index' %}" class="navbar-brand">Welcome</a>
+                </div>
+                <div class="collapse navbar-collapse js-navbar-scrollspy" id="myScroll">
+                    <ul class="nav navbar-nav">
+                    <li><a href="#signin">Sign in</a></li>
+                    <li><a href="{% url 'garrett:signUp' %}">Sign up</a></li>
+                    </ul>
+                </div>   
+            </div>
+        </nav>
+ 
+        <div class="container">
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <h1>Classical Music WebSite</h1>
+            <br/><br/><br/><br/><br/><br/><br/><br/>
+            <div class='row'>
+                <div class="col-md-2">
+                    <button id='btn1' class="btn btn-lg btn-primary" type="button" name="signin">Click To Sign In</button>
+                </div>
+                <!-- <div class="col-md-2">
+                    <button id='btn1' class="btn btn-lg btn-primary" type="button" name="signup">Click To Sign Up</button>
+                </div> -->
+            </div>
+            <br/><br/><br/><br/><br/><br/><br/><br/>
+        </div>
+
+        <div id="signin" class="container-fluid" >
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <div class="div-signin">
+                
+            <form method='post' action="" class="form-signin">
+            <!-- <form action="" class="form-horizontal"> -->
+                <h2 class="form-signin-heading">Sign In</h2>
+                <!-- <input type="text" class="form-control" placeholder="Account">
+                <input type="password" class="form-control" placeholder="Password"> -->
+                {% csrf_token %}
+                {{ uf1 }}
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                        {{ message }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </form>
+            </div>
+                <br><br><br><br><br><br><br><br>
+        </div>
+
+        
+
+    <script>
+        $("button[name='signin']").click(function(){
+            $('body,html').animate({scrollTop:$(window).height()},2000);
+        });
+        // $("button[name='signup']").click(function(){
+        //     $('body,html').animate({scrollTop:$(window).height()*2+30},1500);
+        // });
+    </script>   
+
+    <script src="{% static 'bootstrap/dist/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+    </body>
+</html>
